@@ -43,8 +43,9 @@ function draw() {
   collBallRack();
   collBallRackEnemy();
   moveEnemyRack();
+  showPoints();
+  countPoints();
 }
-
 function showBall(){
   circle(ballX, ballY, ballRay);
 }
@@ -56,6 +57,7 @@ function moveBall(){
 
 function collBallCanvas(){
   if (ballX <= 0 || ballX >= canvasLength) {
+    ballX = canvasLength/2;
     ballXspeed *= -1;}
   
   if (ballY <= 0 || ballY >= canvasHeight){
@@ -79,14 +81,18 @@ function moveMyRacket(){
 //im gonna try to create the collision here
 
 function collBallRack(){
-  if (ballY >= rackY && ballY <= rackY + rackH && ballX <= rackX + rackW){
-    ballX *= -1;
+  if (ballY >= rackY && 
+      ballY <= rackY + rackH && 
+      ballX <= rackX + rackW){
+    ballXspeed *= -1;
   }
 }
 
 function collBallRackEnemy(){
-  if (ballY >= enemyRackY && ballY <= enemyRackY + rackH && ballX >= enemyRackX){
-    ballX *= -1;
+  if (ballY >= enemyRackY && 
+      ballY <= enemyRackY + rackH && 
+      ballX >= enemyRackX){
+    ballXspeed *= -1;
   }
 }
 
@@ -96,5 +102,21 @@ function moveEnemyRack(){
   }
   if (enemyRackY <= ballY){
     enemyRackY += enemyRackSpeed;
+  }
+}
+
+function showPoints(){
+  fill(255);
+  textSize(15);
+  text(myPoints,100,50);
+  text(enemyPoints, canvasLength - 100, 50);
+}
+
+function countPoints(){
+  if (ballX + ballXspeed <= 0){
+    enemyPoints += 1;
+  } 
+  if (ballX + ballXspeed >= canvasLength){
+    myPoints += 1;
   }
 }
